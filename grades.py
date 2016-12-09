@@ -24,6 +24,7 @@ def calc_final_grade(grades):
     # group by group
     grouped = grades.groupby(by='group')
     ects_per_group = grouped.ects.sum()
+    print("Calculations based on {} / 120 ECTS points".format(ects_per_group.sum()))
     # calculate group mean
     grade_per_group = grouped.grade_times_ects.sum() / ects_per_group
     # join a column with truncated decimals
