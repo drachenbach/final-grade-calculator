@@ -26,22 +26,24 @@ def calc_final_grade(grades):
     ects_per_group = grouped.ects.sum()
     # calculate group mean
     grade_per_group = grouped.grade_times_ects.sum() / ects_per_group
-    # cut off decimals
-    grade_per_group = trunc(grade_per_group)
-    print_grade_per_group(grade_per_group)
+    # join a column with truncated decimals
+    grade_per_group_trunc = trunc(grade_per_group)
+    print_grade_per_group(grade_per_group, grade_per_group_trunc)
     # calc weighted total average
-    total_average = (grade_per_group * ects_per_group).sum() / ects_per_group.sum()
+    total_average = (grade_per_group_trunc * ects_per_group).sum() / ects_per_group.sum()
     print_total_average(total_average)
 
 
-def print_grade_per_group(grades):
+def print_grade_per_group(grades, grades_trunc):
+    # concat series
+    x = pd.concat([grades, grades_trunc], axis=1, keys=['grade', 'grade_trunc'])
     print('Average per group:')
-    for group, grade in grades.iteritems():
-        print('\t{}: {}'.format(group, grade))
+    for k, v in x.iterrows():
+        print('\t{}: {:0.1f} (exact: {:0.5f})'.format(k, v.grade_trunc, v.grade))
 
 
 def print_total_average(total_average):
-    print('Total average: {0:0.1f} (exact: {0:0.5f})'.format(total_average, total_average))
+    print('Total average: {:0.1f} (exact: {:0.5f})'.format(total_average, total_average))
 
 
 def trunc(x, dec=1):
