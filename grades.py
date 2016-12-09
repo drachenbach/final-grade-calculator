@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import math
 import sys
 import argparse
 
@@ -44,7 +45,7 @@ def print_grade_per_group(grades, grades_trunc):
 
 
 def print_total_average(total_average):
-    print('Total average: {:0.1f} (exact: {:0.5f})'.format(total_average, total_average))
+    print('Total average: {:0.1f} (exact: {:0.5f})'.format(math.floor(total_average * 10) / 10, total_average))
 
 
 def trunc(x, dec=1):
