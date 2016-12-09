@@ -12,7 +12,7 @@ def parse_args():
 
 def load_grades(file_path):
     try:
-        return pd.read_csv(file_path)
+        return pd.read_csv(file_path, comment='#')
     except OSError:
         print('Could not find file using path \"{}\"'.format(file_path))
         sys.exit(1)
