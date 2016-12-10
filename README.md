@@ -10,4 +10,7 @@ Expects the grades in a CSV format where each row corresponds to a module and co
 * `group`: name of the group (e.g. MMM fundamentals),
 * `grade`: grade for module,
 * `ects`: number of ECTS points for module.
+
+The CSV file has to provide the following header line: group, grade, ects 
+
 Use `#` to comment a line.
