@@ -1,8 +1,13 @@
-import pandas as pd
-import numpy as np
-import math
-import sys
 import argparse
+import math
+import os
+import sys
+import time
+
+import numpy as np
+import pandas as pd
+from watchdog.events import FileSystemEventHandler
+from watchdog.observers import Observer
 
 
 def parse_args():
@@ -52,7 +57,22 @@ def trunc(x, dec=1):
     d = np.power(10, dec)
     return np.floor(x * d) / d
 
+
+class FileChangeHandler(FileSystemEventHandler):
+    def on_modified(self, event):
+        grades = load_grades(event.src_path)
+        calc_final_grade(grades)
+        pass
+
 if __name__ == '__main__':
     args = parse_args()
-    grades = load_grades(args.file_path)
-    calc_final_grade(grades)
+    event_handler = FileChangeHandler()
+    observer = Observer()
+    observer.schedule(event_handler, path=os.path.dirname(args.file_path), recursive=False)
+    observer.start()
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        observer.stop()
+    observer.join()
